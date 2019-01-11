@@ -2,9 +2,7 @@
 # Here are some parameters. See all on
 # https://pgbouncer.github.io/config.html
 
-PG_LOG=/var/log/pgbouncer
 PG_CONFIG_DIR=/etc/pgbouncer
-PG_USER=postgres
 
 if [ ! -f ${PG_CONFIG_DIR}/pgbouncer.ini ]; then
   echo "create pgbouncer config in ${PG_CONFIG_DIR}"
@@ -111,13 +109,8 @@ ${TCP_KEEPINTVL:+tcp_keepintvl = ${TCP_KEEPINTVL}\n}\
 " > ${PG_CONFIG_DIR}/pgbouncer.ini
 fi
 
-adduser ${PG_USER}
-mkdir -p ${PG_LOG}
-chmod -R 755 ${PG_LOG}
-chown -R ${PG_USER}:${PG_USER} ${PG_LOG}
-
 if [ -z $QUIET ]; then
   cat ${PG_CONFIG_DIR}/pgbouncer.ini
 fi
 echo "Starting pgbouncer..."
-exec /pgbouncer/bin/pgbouncer ${QUIET:+-q} -u ${PG_USER} ${PG_CONFIG_DIR}/pgbouncer.ini
+exec /pgbouncer/bin/pgbouncer ${QUIET:+-q} ${PG_CONFIG_DIR}/pgbouncer.ini

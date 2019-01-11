@@ -22,6 +22,7 @@ RUN ls -R /pgbouncer
 
 FROM alpine:latest
 RUN apk --update add libevent openssl c-ares
+RUN mkdir -p /etc/pgbouncer /var/log/pgbouncer && chmod 775 /etc/pgbouncer /var/log/pgbouncer
 WORKDIR /
 COPY --from=build_stage /pgbouncer /pgbouncer
 ADD entrypoint.sh ./
